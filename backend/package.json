@@ -1,0 +1,16 @@
+{
+  "name": "oss-project-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Demo REST API for the OSS Docker project",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "engines": {
+    "node": "18.x"
+  },
+  "dependencies": {
+    "pg": "8.13.1"
+  }
+}

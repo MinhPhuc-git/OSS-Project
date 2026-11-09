@@ -1,0 +1,12 @@
+{
+  "name": "oss-project-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Demo frontend for the OSS Docker project",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": "18.x"
+  }
+}

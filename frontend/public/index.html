@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OSS Project | Docker demo</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar"><span class="brand-mark">O</span><span>OSS Project</span><span class="tag">DOCKER DEMO</span></header>
+    <section class="hero">
+      <p class="eyebrow">DEVELOPER ONBOARDING · 01</p>
+      <h1>Máy tôi chạy được.<br><span>Máy bạn thì sao?</span></h1>
+      <p class="intro">Một ứng dụng ghi chú nhỏ để cả nhóm thấy môi trường không đồng nhất gây lỗi thế nào — và Docker Compose giúp mọi người bắt đầu từ cùng một cấu hình.</p>
+      <div class="status"><span class="pulse"></span><span id="status-text">Đang kết nối tới backend…</span><code id="runtime"></code></div>
+    </section>
+    <section class="workspace">
+      <div class="section-heading"><div><p class="eyebrow">SHARED WORKSPACE</p><h2>Ghi chú nhóm</h2></div><span class="counter" id="counter">0 NOTES</span></div>
+      <form id="note-form"><label class="sr-only" for="note-input">Ghi chú mới</label><input id="note-input" maxlength="2000" placeholder="Chia sẻ điều bạn vừa phát hiện…" required><button type="submit">Thêm ghi chú <span>↗</span></button></form>
+      <p class="form-hint">Dữ liệu được lưu trong PostgreSQL do Docker Compose khởi chạy.</p>
+      <ul id="notes" class="notes"><li class="empty">Chưa có ghi chú nào. Hãy bắt đầu cuộc thử nghiệm.</li></ul>
+    </section>
+    <footer><span>NODE.JS 18 · POSTGRESQL 16</span><span>ONE CONFIG · EVERY MACHINE</span></footer>
+  </main>
+  <script src="/app.js" defer></script>
+</body>
+</html>
