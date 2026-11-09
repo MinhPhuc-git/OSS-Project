@@ -1,5 +1,15 @@
 node_modules/
 npm-debug.log*
+# Local environment files and secrets
 .env
+.env.*
+
+# Docker setup (keep local, exclude from the Git demo)
+**/Dockerfile
+**/Dockerfile.*
+docker-compose*.yml
+docker-compose*.yaml
+compose*.yml
+compose*.yaml
 .DS_Store
 Thumbs.db

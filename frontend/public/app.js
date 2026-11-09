@@ -1,14 +1,14 @@
-const API = window.location.port === '8080'
-  ? `${window.location.protocol}//${window.location.hostname}:3000`
-  : 'http://localhost:3000';
+const API = `http://${window.location.hostname}:3000`;
 
-const status = document.querySelector('.status');
+const status = document.querySelector('#status');
 const statusText = document.querySelector('#status-text');
 const runtime = document.querySelector('#runtime');
+const requestResult = document.querySelector('#request-result');
 const notes = document.querySelector('#notes');
 const counter = document.querySelector('#counter');
 const form = document.querySelector('#note-form');
 const input = document.querySelector('#note-input');
+const checkButton = document.querySelector('#check-api');
 
 function renderNotes(items) {
   counter.textContent = `${items.length} NOTE${items.length === 1 ? '' : 'S'}`;
@@ -34,45 +34,45 @@ function renderNotes(items) {
 
 async function loadNotes() {
   const response = await fetch(`${API}/api/notes`);
-  if (!response.ok) throw new Error('Không tải được ghi chú.');
+  requestResult.textContent = `GET /api/notes → HTTP ${response.status}`;
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
   renderNotes(await response.json());
-}
-
-async function connect() {
-  try {
-    const response = await fetch(`${API}/api/health`);
-    const health = await response.json();
-    if (!response.ok) throw new Error('Backend chưa sẵn sàng.');
-    status.classList.add('ready');
-    statusText.textContent = 'Backend và database đã kết nối';
-    runtime.textContent = health.runtime;
-    await loadNotes();
-  } catch {
-    statusText.textContent = 'Chưa kết nối — hãy chạy docker compose up';
-    runtime.textContent = '';
-  }
 }
 
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
-  const button = form.querySelector('button');
-  button.disabled = true;
+  requestResult.textContent = 'POST /api/notes → đang chờ BE...';
   try {
     const response = await fetch(`${API}/api/notes`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ content: input.value }),
     });
+    requestResult.textContent = `POST /api/notes → HTTP ${response.status}`;
     const result = await response.json();
-    if (!response.ok) throw new Error(result.error || 'Không thể lưu ghi chú.');
+    if (!response.ok) throw new Error(result.error);
     input.value = '';
     await loadNotes();
   } catch (error) {
-    statusText.textContent = error.message;
+    requestResult.textContent = `POST /api/notes → REQUEST FAILED: ${error.message}`;
+    statusText.textContent = 'BE không phản hồi; chức năng cần BE + database đã lỗi.';
     status.classList.remove('ready');
-  } finally {
-    button.disabled = false;
+    console.error('POST /api/notes thất bại:', error);
   }
 });
 
-connect();
+checkButton.addEventListener('click', async () => {
+  requestResult.textContent = 'GET /api/notes → đang chờ BE...';
+  try {
+    await loadNotes();
+    status.classList.add('ready');
+    statusText.textContent = 'BE và database đã phản hồi.';
+  } catch (error) {
+    requestResult.textContent = `GET /api/notes → REQUEST FAILED: ${error.message}`;
+    status.classList.remove('ready');
+    statusText.textContent = 'BE không phản hồi; chức năng cần BE + database đã lỗi.';
+    console.error('GET /api/notes thất bại:', error);
+  }
+});
+
+// Không gọi BE lúc mở trang: FE vẫn hiển thị khi BE đã crash.

@@ -13,13 +13,15 @@
       <p class="eyebrow">DEVELOPER ONBOARDING · 01</p>
       <h1>Máy tôi chạy được.<br><span>Máy bạn thì sao?</span></h1>
       <p class="intro">Một ứng dụng ghi chú nhỏ để cả nhóm thấy môi trường không đồng nhất gây lỗi thế nào — và Docker Compose giúp mọi người bắt đầu từ cùng một cấu hình.</p>
-      <div class="status"><span class="pulse"></span><span id="status-text">Đang kết nối tới backend…</span><code id="runtime"></code></div>
+      <div class="status" id="status"><span class="pulse"></span><span id="status-text">Backend chưa được kiểm tra</span><code id="runtime"></code></div>
     </section>
     <section class="workspace">
-      <div class="section-heading"><div><p class="eyebrow">SHARED WORKSPACE</p><h2>Ghi chú nhóm</h2></div><span class="counter" id="counter">0 NOTES</span></div>
+      <div class="section-heading"><div><p class="eyebrow">API + DATABASE</p><h2>Ghi chú nhóm</h2></div><span class="counter" id="counter">0 NOTES</span></div>
+      <button id="check-api" class="check-api" type="button">GET /api/notes</button>
       <form id="note-form"><label class="sr-only" for="note-input">Ghi chú mới</label><input id="note-input" maxlength="2000" placeholder="Chia sẻ điều bạn vừa phát hiện…" required><button type="submit">Thêm ghi chú <span>↗</span></button></form>
       <p class="form-hint">Dữ liệu được lưu trong PostgreSQL do Docker Compose khởi chạy.</p>
       <ul id="notes" class="notes"><li class="empty">Chưa có ghi chú nào. Hãy bắt đầu cuộc thử nghiệm.</li></ul>
+      <p id="request-result" class="request-result" aria-live="polite">Chưa gửi request.</p>
     </section>
     <footer><span>NODE.JS 18 · POSTGRESQL 16</span><span>ONE CONFIG · EVERY MACHINE</span></footer>
   </main>

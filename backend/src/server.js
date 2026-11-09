@@ -1,10 +1,25 @@
 const http = require('node:http');
 const { URL } = require('node:url');
 const { Pool } = require('pg');
+const fs = require('node:fs');
+const path = require('node:path');
+
+function loadRootEnv() {
+  const envPath = path.resolve(__dirname, '../../.env');
+  if (!fs.existsSync(envPath)) return;
+  for (const line of fs.readFileSync(envPath, 'utf8').split(/\r?\n/)) {
+    const match = line.match(/^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*?)\s*$/);
+    if (match && process.env[match[1]] === undefined) {
+      process.env[match[1]] = match[2].replace(/^(['"])(.*)\1$/, '$2');
+    }
+  }
+}
+
+loadRootEnv();
 
 const port = Number(process.env.PORT || 3000);
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || 'postgres://oss_user:oss_demo_password@localhost:5432/oss_project',
+  connectionString: process.env.DATABASE_URL || `postgres://${process.env.POSTGRES_USER || 'oss_user'}:${process.env.POSTGRES_PASSWORD || 'oss_demo_password'}@localhost:5432/${process.env.POSTGRES_DB || 'oss_project'}`,
 });
 
 const html = (value) => String(value).replace(/[&<>"']/g, (character) => ({
@@ -72,7 +87,7 @@ const server = http.createServer(async (request, response) => {
 initializeDatabase()
   .then(() => server.listen(port, '0.0.0.0', () => console.log(`API đang chạy tại cổng ${port} (${process.version})`)))
   .catch((error) => {
-    console.error('Không thể khởi tạo database:', error.message);
+    console.error(error);
     process.exit(1);
   });
 
